@@ -12,7 +12,7 @@ import { unstable_serialize } from 'swr';
 import { featureApiClient } from '@wsh-2024/app/src/features/feature/apiClient/featureApiClient';
 import { rankingApiClient } from '@wsh-2024/app/src/features/ranking/apiClient/rankingApiClient';
 import { releaseApiClient } from '@wsh-2024/app/src/features/release/apiClient/releaseApiClient';
-import { ClientApp } from '@wsh-2024/app/src/index';
+import { ClientApp, Router } from '@wsh-2024/app/src/index';
 import { getDayOfWeekStr } from '@wsh-2024/app/src/lib/date/getDayOfWeekStr';
 
 import { INDEX_HTML_PATH } from '../../constants/paths';
@@ -78,6 +78,7 @@ app.get('*', async (c) => {
       sheet.collectStyles(
         <StaticRouter location={c.req.path}>
           <ClientApp />
+          <Router />
         </StaticRouter>,
       ),
     );
