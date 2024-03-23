@@ -32,6 +32,7 @@ class RankingRepository implements RankingRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               author: {

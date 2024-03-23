@@ -38,7 +38,7 @@ const _AvatarWrapper = styled.div`
 `;
 
 type Props = {
-  book: ReturnType<typeof useBook>['data'];
+  book: Pick<ReturnType<typeof useBook>['data'], 'id' | 'name' | 'description' | 'image' | 'author'>;
   bookId: string;
 };
 
