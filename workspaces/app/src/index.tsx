@@ -1,5 +1,3 @@
-import './setup';
-
 import { Dialog } from './foundation/components/Dialog';
 import { GlobalStyle } from './foundation/styles/GlobalStyle';
 export { Router, routes } from './routes';
