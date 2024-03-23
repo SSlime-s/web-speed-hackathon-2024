@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -9,7 +10,6 @@ import { ActionLayout } from './foundation/layouts/ActionLayout';
 import { CommonLayout } from './foundation/layouts/CommonLayout';
 import { Color, Space, Typography } from './foundation/styles/variables';
 import { lazyImport } from './lib/lazyNamed';
-import { Suspense } from 'react';
 
 const { BookDetailPage } = lazyImport(() => import('./pages/BookDetailPage'), 'BookDetailPage');
 const { EpisodeDetailPage } = lazyImport(() => import('./pages/EpisodeDetailPage'), 'EpisodeDetailPage');

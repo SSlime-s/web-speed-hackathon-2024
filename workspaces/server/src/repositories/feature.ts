@@ -31,6 +31,7 @@ class FeatureRepository implements FeatureRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               author: {

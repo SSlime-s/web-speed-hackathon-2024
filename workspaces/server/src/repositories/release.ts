@@ -48,6 +48,7 @@ class ReleaseRepository implements ReleaseRepositoryInterface {
               description: true,
               id: true,
               name: true,
+              nameRuby: true,
             },
             with: {
               author: {
