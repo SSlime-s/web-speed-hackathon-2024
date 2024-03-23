@@ -17,6 +17,9 @@ const main = async () => {
   // await preloadImages();
 
   function handler() {
+    window.removeEventListener('DOMContentLoaded', handler);
+    window.removeEventListener('load', handler);
+
     if (window.location.pathname.startsWith('/admin')) {
       ReactDOM.createRoot(document.getElementById('root')!).render(<AdminApp />);
     } else {
@@ -29,7 +32,8 @@ const main = async () => {
       );
     }
   }
-  window.addEventListener('DOMContentLoaded', handler, { once: true });
+  window.addEventListener('DOMContentLoaded', handler);
+  window.addEventListener('load', handler);
 };
 
 main().catch(console.error);
