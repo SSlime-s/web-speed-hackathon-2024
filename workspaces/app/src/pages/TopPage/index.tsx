@@ -1,9 +1,9 @@
 import { Suspense, useId } from 'react';
 
 import { BookCard } from '../../features/book/components/BookCard';
-import { FeatureCard } from '../../features/feature/components/FeatureCard';
+import { FeatureCard, FeatureCardSkeleton } from '../../features/feature/components/FeatureCard';
 import { useFeatureList } from '../../features/feature/hooks/useFeatureList';
-import { RankingCard } from '../../features/ranking/components/RankingCard';
+import { RankingCard, RankingCardSkeleton } from '../../features/ranking/components/RankingCard';
 import { useRankingList } from '../../features/ranking/hooks/useRankingList';
 import { useRelease } from '../../features/release/hooks/useRelease';
 import { Box } from '../../foundation/components/Box';
@@ -36,6 +36,23 @@ const FeatureSection: React.FC = () => {
     </Box>
   );
 };
+const FeatureSkeleton: React.FC = () => {
+  return (
+    <Box as="section" maxWidth="100%" mt={16} width="100%">
+      <Text as="h2" color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
+        ピックアップ
+      </Text>
+      <Spacer height={Space * 2} />
+      <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
+        <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
+          {[...Array(5)].map((_, index) => (
+            <FeatureCardSkeleton key={index} />
+          ))}
+        </Flex>
+      </Box>
+    </Box>
+  );
+};
 
 const RankingSection: React.FC = () => {
   const { data: rankingList } = useRankingList({ query: {} });
@@ -52,6 +69,23 @@ const RankingSection: React.FC = () => {
         <Flex align="center" as="ul" direction="column" justify="center">
           {rankingList.map((ranking) => (
             <RankingCard key={ranking.id} book={ranking.book} bookId={ranking.book.id} />
+          ))}
+        </Flex>
+      </Box>
+    </Box>
+  );
+};
+const RankingSkeleton: React.FC = () => {
+  return (
+    <Box as="section" maxWidth="100%" width="100%">
+      <Text as="h2" color={Color.MONO_100} typography={Typography.NORMAL20} weight="bold">
+        ランキング
+      </Text>
+      <Spacer height={Space * 2} />
+      <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
+        <Flex align="center" as="ul" direction="column" justify="center">
+          {[...Array(5)].map((_, index) => (
+            <RankingCardSkeleton key={index} />
           ))}
         </Flex>
       </Box>
@@ -90,13 +124,13 @@ const TopPage: React.FC = () => {
         <CoverSection />
       </Box>
       <Box as="main" maxWidth="100%" width="100%">
-        <Suspense fallback={null}>
+        <Suspense fallback={<FeatureSkeleton />}>
           <FeatureSection />
         </Suspense>
 
         <Spacer height={Space * 2} />
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<RankingSkeleton />}>
           <RankingSection />
         </Suspense>
 

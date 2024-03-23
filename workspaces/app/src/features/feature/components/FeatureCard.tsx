@@ -48,6 +48,28 @@ type Props = {
   bookId: string;
 };
 
+export const FeatureCardSkeleton: React.FC = () => {
+  return (
+    <_Wrapper href={''}>
+      <_ImgWrapper />
+      <_ContentWrapper>
+        <Text color={Color.MONO_100} typography={Typography.NORMAL16} weight="bold">
+          {'Loading...'}
+        </Text>
+        <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL14}>
+          {'Loading...'}
+        </Text>
+        <Flex align="center" gap={Space * 1} justify="flex-end">
+          <_AvatarWrapper />
+          <Text color={Color.MONO_100} typography={Typography.NORMAL14}>
+            {'Loading...'}
+          </Text>
+        </Flex>
+      </_ContentWrapper>
+    </_Wrapper>
+  );
+}
+
 const FeatureCard: React.FC<Props> = ({ book, bookId }) => {
   const imageUrl = useImage({ height: 96, imageId: book.image.id, width: 96 });
   const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });

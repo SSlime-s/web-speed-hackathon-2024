@@ -42,6 +42,30 @@ type Props = {
   bookId: string;
 };
 
+export const RankingCardSkeleton: React.FC = () => {
+  return (
+    <_Wrapper>
+      <_Link href={''}>
+        <Spacer height={Space * 1.5} />
+        <Flex align="flex-start" gap={Space * 2.5} justify="flex-start">
+          <_ImgWrapper />
+          <Box width="100%">
+            <Flex align="flex-start" direction="column" gap={Space * 1} justify="flex-start">
+              <Text color={Color.MONO_100} typography={Typography.NORMAL16} weight="bold">
+                {'Loading...'}
+              </Text>
+              <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL14}>
+                {'Loading...'}
+              </Text>
+            </Flex>
+          </Box>
+        </Flex>
+        <Spacer height={Space * 1.5} />
+      </_Link>
+    </_Wrapper>
+  );
+};
+
 const RankingCard: React.FC<Props> = ({ book }) => {
   const imageUrl = useImage({ height: 96, imageId: book.image.id, width: 96 });
   const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
