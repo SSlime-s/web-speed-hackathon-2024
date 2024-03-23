@@ -35,7 +35,7 @@ const createStreamBody = (stream: ReadStream) => {
   return body;
 };
 
-const SUPPORTED_IMAGE_EXTENSIONS = ['jxl', 'avif', 'webp', 'png', 'jpeg', 'jpg'] as const;
+const SUPPORTED_IMAGE_EXTENSIONS = ['jxl', 'avif', 'webp', 'png', 'jpeg', 'jpg', 'original'] as const;
 
 type SupportedImageExtension = (typeof SUPPORTED_IMAGE_EXTENSIONS)[number];
 
@@ -50,6 +50,7 @@ const IMAGE_MIME_TYPE: Record<SupportedImageExtension, string> = {
   ['jxl']: 'image/jxl',
   ['png']: 'image/png',
   ['webp']: 'image/webp',
+  ['original']: 'invalid',
 };
 
 const IMAGE_CONVERTER: Record<SupportedImageExtension, ConverterInterface> = {
@@ -59,6 +60,7 @@ const IMAGE_CONVERTER: Record<SupportedImageExtension, ConverterInterface> = {
   ['jxl']: jpegXlConverter,
   ['png']: pngConverter,
   ['webp']: webpConverter,
+  ['original']: jpegConverter,
 };
 
 const app = new Hono();
@@ -84,10 +86,10 @@ app.get(
 
     const { ext: reqImgExt, name: reqImgId } = path.parse(c.req.valid('param').imageFile);
 
-    const resImgFormat = c.req.valid('query').format ?? reqImgExt.slice(1);
+    const rawResImgFormat = c.req.valid('query').format ?? reqImgExt.slice(1);
 
-    if (!isSupportedImageFormat(resImgFormat)) {
-      throw new HTTPException(501, { message: `Image format: ${resImgFormat} is not supported.` });
+    if (!isSupportedImageFormat(rawResImgFormat)) {
+      throw new HTTPException(501, { message: `Image format: ${rawResImgFormat} is not supported.` });
     }
 
     const origFileGlob = [path.resolve(IMAGES_PATH, `${reqImgId}`), path.resolve(IMAGES_PATH, `${reqImgId}.*`)];
@@ -100,6 +102,7 @@ app.get(
     if (!isSupportedImageFormat(origImgFormat)) {
       throw new HTTPException(500, { message: 'Failed to load image.' });
     }
+    const resImgFormat = rawResImgFormat === 'original' ? origImgFormat : rawResImgFormat;
     if (resImgFormat === origImgFormat && c.req.valid('query').width == null && c.req.valid('query').height == null) {
       // 画像変換せずにそのまま返す
       c.header('Content-Type', IMAGE_MIME_TYPE[resImgFormat]);
