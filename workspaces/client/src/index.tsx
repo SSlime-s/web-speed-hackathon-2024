@@ -12,14 +12,26 @@ import { registerServiceWorker } from './utils/registerServiceWorker';
 
 const router = createBrowserRouter(routes);
 
+function documentReady(fn: () => void) {
+  function handler() {
+    document.removeEventListener('DOMContentLoaded', handler);
+    window.removeEventListener('load', handler);
+    fn();
+  }
+
+  if (document.readyState === 'complete' || (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
+    fn();
+  } else {
+    document.addEventListener('DOMContentLoaded', handler);
+    window.addEventListener('load', handler);
+  }
+}
+
 const main = async () => {
   await registerServiceWorker();
   // await preloadImages();
 
   function handler() {
-    window.document.removeEventListener('DOMContentLoaded', handler);
-    window.document.removeEventListener('load', handler);
-
     if (window.location.pathname.startsWith('/admin')) {
       ReactDOM.createRoot(document.getElementById('root')!).render(<AdminApp />);
     } else {
@@ -32,8 +44,8 @@ const main = async () => {
       );
     }
   }
-  window.document.addEventListener('DOMContentLoaded', handler);
-  window.document.addEventListener('load', handler);
+
+  documentReady(handler);
 };
 
 main().catch(console.error);
